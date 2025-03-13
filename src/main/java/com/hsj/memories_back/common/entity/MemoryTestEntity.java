@@ -1,7 +1,10 @@
 package com.hsj.memories_back.common.entity;
 
+import com.hsj.memories_back.common.entity.pk.MemoryTestPk;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +17,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@IdClass(MemoryTestPk.class)
 public class MemoryTestEntity {
     
     @Id
