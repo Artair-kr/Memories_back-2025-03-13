@@ -18,7 +18,7 @@ public class ResponseDto {
     // 패키지의 내부, 상속한 클래스에서만 사용할 수 있다.
     protected ResponseDto() {
         this.code = ResponseCode.SUCCESS;
-        this.code = ResponseMessage.SUCCESS;
+        this.message = ResponseMessage.SUCCESS;
     }
 
     public static ResponseEntity<ResponseDto> success(HttpStatus status) {
