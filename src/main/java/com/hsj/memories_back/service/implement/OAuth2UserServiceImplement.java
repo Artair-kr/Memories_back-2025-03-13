@@ -19,67 +19,62 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
-    
-    private final UserRepository userRepository;
-    // 토큰
-    private final JwtProvider jwtProvider;
+public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
-    @Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
+  private final UserRepository userRepository;
+  private final JwtProvider jwtProvider;
+  
+  @Override
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+    OAuth2User oAuth2User = super.loadUser(userRequest);
+    String registration = userRequest.getClientRegistration().getClientName().toUpperCase();
 
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-        // toUpperCase() : 모두 대문자로 변경
-        String registration = userRequest.getClientRegistration().getClientName().toUpperCase();
+    // try {
+    //   System.out.println("==================================================");
+    //   System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
+    //   System.out.println(oAuth2User.getName());
+    //   System.out.println("==================================================");
+    // } catch (Exception exception) {
+    //   exception.printStackTrace();
+    // }
 
-        // try { 
-            // System.out.println("===================================================");
-            // System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
-            // System.out.println(oAuth2User.getName());
-            // System.out.println("===================================================");
-        // } catch (Exception exception){ 
-        //     exception.printStackTrace();
-        // }
-        String snsId = getSnsId(oAuth2User, registration);
-        UserEntity userEntity = userRepository.findByJoinTypeAndSnsId(registration, snsId);
+    String snsId = getSnsId(oAuth2User, registration);
+    UserEntity userEntity = userRepository.findByJoinTypeAndSnsId(registration, snsId);
 
-        CustomOAuth2User customOAuth2User = null;
+    CustomOAuth2User customOAuth2User = null;
+    Map<String, Object> attributes = new HashMap<>();
 
-        Map<String, Object> attributes = new HashMap<>();
+    if (userEntity == null) {
+      attributes.put("snsId", snsId);
+      attributes.put("joinType", registration);
 
-        if(userEntity == null){ 
-            // 회원가입 페이지로 넘긴다. (회원가입 안되어있을시)
-            attributes.put("snsId", snsId);
-            attributes.put("joinType", registration);
-            // 3번째는 회원가입 여부 / false = 회원가입 안함
-            customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
-        } else { 
-            // 회원가입이 되어있을때
-            String userId = userEntity.getUserId();
-            String accessToken = jwtProvider.create(userId);
-            attributes.put("accessToken", accessToken);
+      customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
+    } else {
+      String userId = userEntity.getUserId();
+      String accessToken = jwtProvider.create(userId);
+      attributes.put("accessToken", accessToken);
 
-            // 3번째는 회원가입 여부
-            customOAuth2User = new CustomOAuth2User(userId, attributes, true);
-        }
-
-        return customOAuth2User;
-
+      customOAuth2User = new CustomOAuth2User(userId, attributes, true);
     }
 
-    // function: 결과로 받은 유저 정보에서 ragistration에 따라 id 값을 추출하는 함수 //
-    private String getSnsId(OAuth2User oAuth2User, String registration){
+    return customOAuth2User;
+  }
 
-        String snsId = null;
+  // function: 결과로 받은 유저 정보에서 ragistration에 따라 id 값을 추출하는 함수 //
+  private String getSnsId(OAuth2User oAuth2User, String registration) {
 
-        if(registration.equals("KAKAO")){ 
-            snsId = oAuth2User.getName();
-        }
-        if (registration.equals("NAVER")) {
-            Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            snsId = response.get("id");
-          }
+    String snsId = null;
 
-        return snsId;
+    if (registration.equals("KAKAO")) {
+      snsId = oAuth2User.getName();
     }
+    if (registration.equals("NAVER")) {
+      Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
+      snsId = response.get("id");
+    }
+
+    return snsId;
+
+  }
+
 }
