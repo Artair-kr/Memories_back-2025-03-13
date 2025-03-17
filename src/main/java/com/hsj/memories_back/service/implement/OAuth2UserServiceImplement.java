@@ -1,4 +1,6 @@
 package com.hsj.memories_back.service.implement;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -6,11 +8,23 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hsj.memories_back.common.entity.CustomOAuth2User;
+import com.hsj.memories_back.common.entity.UserEntity;
+import com.hsj.memories_back.provider.JwtProvider;
+import com.hsj.memories_back.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+
 
 @Service
+@RequiredArgsConstructor
 public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
     
+    private final UserRepository userRepository;
+    // 토큰
+    private final JwtProvider jwtProvider;
+
     @Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 
@@ -18,16 +32,50 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
         // toUpperCase() : 모두 대문자로 변경
         String registration = userRequest.getClientRegistration().getClientName().toUpperCase();
 
-        try { 
-            System.out.println("===================================================");
-            System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
-            System.out.println(oAuth2User.getName());
-            System.out.println("===================================================");
-        } catch (Exception exception){ 
-            exception.printStackTrace();
+        // try { 
+            // System.out.println("===================================================");
+            // System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
+            // System.out.println(oAuth2User.getName());
+            // System.out.println("===================================================");
+        // } catch (Exception exception){ 
+        //     exception.printStackTrace();
+        // }
+        String snsId = getSnsId(oAuth2User, registration);
+        UserEntity userEntity = userRepository.findByJoinTypeAndSnsId(registration, snsId);
+
+        CustomOAuth2User customOAuth2User = null;
+
+        if(userEntity == null){ 
+            // 회원가입 페이지로 넘긴다. (회원가입 안되어있을시)
+        } else { 
+            // 회원가입이 되어있을때
+            String userId = userEntity.getUserId();
+            String accessToken = jwtProvider.create(userId);
+
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("accessToken", accessToken);
+
+            // 3번째는 회원가입 여부
+            customOAuth2User = new CustomOAuth2User(userId, attributes, true);
         }
 
-        return oAuth2User;
+        return customOAuth2User;
 
+    }
+
+    // function: 결과로 받은 유저 정보에서 ragistration에 따라 id 값을 추출하는 함수 //
+    private String getSnsId(OAuth2User oAuth2User, String registration){
+
+        String snsId = null;
+
+        if(registration.equals("KAKAO")){ 
+            snsId = oAuth2User.getName();
+        }
+        if (registration.equals("NAVER")) {
+            Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
+            snsId = response.get("id");
+          }
+
+        return snsId;
     }
 }
