@@ -45,14 +45,18 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
 
         CustomOAuth2User customOAuth2User = null;
 
+        Map<String, Object> attributes = new HashMap<>();
+
         if(userEntity == null){ 
             // 회원가입 페이지로 넘긴다. (회원가입 안되어있을시)
+            attributes.put("snsId", snsId);
+            attributes.put("joinType", registration);
+            // 3번째는 회원가입 여부 / false = 회원가입 안함
+            customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
         } else { 
             // 회원가입이 되어있을때
             String userId = userEntity.getUserId();
             String accessToken = jwtProvider.create(userId);
-
-            Map<String, Object> attributes = new HashMap<>();
             attributes.put("accessToken", accessToken);
 
             // 3번째는 회원가입 여부
