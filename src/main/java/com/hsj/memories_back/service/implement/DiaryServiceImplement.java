@@ -13,7 +13,6 @@ import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.hsj.memories_back.common.entity.DiaryEntity;
-import com.hsj.memories_back.handler.OAuth2SuccessHandler;
 import com.hsj.memories_back.repository.DiaryRepository;
 import com.hsj.memories_back.service.DiarySerivce;
 
