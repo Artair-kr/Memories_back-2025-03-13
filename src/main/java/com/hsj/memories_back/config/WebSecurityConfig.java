@@ -53,9 +53,10 @@ public class WebSecurityConfig {
             // description: 인가 설정 //
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
+                .requestMatchers("/api/v1/diary", "/api/v1/diary/**").authenticated()
                 .anyRequest().authenticated()
             )
-            // description: Oauth 로그인 등록 //
+            // description: Oauth 로그인 적용 //
             .oauth2Login(oauth2 -> oauth2
                 .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                 // 들어오는 곳
