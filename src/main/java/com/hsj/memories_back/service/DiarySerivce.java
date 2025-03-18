@@ -1,6 +1,11 @@
 package com.hsj.memories_back.service;
 
-public interface DiarySerivce {
+import org.springframework.http.ResponseEntity;
 
+import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
+import com.hsj.memories_back.common.dto.response.ResponseDto;
+
+public interface DiarySerivce {
+    ResponseEntity<ResponseDto> postDiary(PostDiaryRequestDto dto, String userId);
     
 } 
