@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.hsj.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
@@ -73,5 +74,28 @@ public class DiaryServiceImplement implements DiarySerivce {
     }
 
     return GetDiaryResponseDto.success(diaryEntity);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> patchDiary(PatchDiaryRequestDto dto, Integer diaryNumber, String userId) {
+    
+    
+    try { 
+
+      DiaryEntity diaryEntity = diaryRepository.findByDiaryNumber(diaryNumber);
+      if(diaryEntity == null) return ResponseDto.noExistDiary();
+
+      String writerId = diaryEntity.getUserId();
+      boolean isWriter = writerId.equals(userId);
+      if(!isWriter) return ResponseDto.noPermission();
+
+      diaryEntity.patch(dto);
+      diaryRepository.save(diaryEntity);
+
+    } catch(Exception exception){ 
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
   }
 }

@@ -3,8 +3,8 @@ package com.hsj.memories_back.common.entity;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.hsj.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
-import com.hsj.memories_back.repository.DiaryRepository;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +41,13 @@ public class DiaryEntity {
 
         this.userId = userId;
         this.writeDate = now.format(dateTimeFormatter);
+        this.weather = dto.getWeather();
+        this.feeling = dto.getFeeling();
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+    }
+
+    public void patch(PatchDiaryRequestDto dto){ 
         this.weather = dto.getWeather();
         this.feeling = dto.getFeeling();
         this.title = dto.getTitle();
