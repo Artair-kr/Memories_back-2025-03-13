@@ -98,4 +98,25 @@ public class DiaryServiceImplement implements DiarySerivce {
     }
     return ResponseDto.success(HttpStatus.OK);
   }
+
+  @Override
+  public ResponseEntity<ResponseDto> deleteDiary(Integer diaryNumber, String userId) {
+
+    try{ 
+
+      DiaryEntity diaryEntity = diaryRepository.findByDiaryNumber(diaryNumber);
+      if(diaryEntity == null) return ResponseDto.noExistDiary();
+
+      String writerId = diaryEntity.getUserId();
+      boolean isWriter = writerId.equals(userId);
+      if(!isWriter) return ResponseDto.noPermission();
+
+      diaryRepository.delete(diaryEntity);
+
+    }catch(Exception exception){ 
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
+  }
 }

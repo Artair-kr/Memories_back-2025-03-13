@@ -13,4 +13,5 @@ public interface DiarySerivce {
     ResponseEntity<? super GetMyDiaryResponseDto> getMyDiary(String userId);
     ResponseEntity<? super GetDiaryResponseDto> getDiary(Integer diaryNumber);
     ResponseEntity<ResponseDto> patchDiary(PatchDiaryRequestDto dto, Integer diaryNumber, String userId);
+    ResponseEntity<ResponseDto> deleteDiary(Integer diaryNumber, String userId);
 } 
