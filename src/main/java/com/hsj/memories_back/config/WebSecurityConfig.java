@@ -51,6 +51,7 @@ public class WebSecurityConfig {
             // description: CORS 정책 설정 //
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             // description: 인가 설정 //
+            // description: 인가 설정 //
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
                 .requestMatchers("/api/v1/diary", "/api/v1/diary/**").authenticated()
