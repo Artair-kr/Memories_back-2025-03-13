@@ -1,11 +1,15 @@
 package com.hsj.memories_back.service.implement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
+import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.hsj.memories_back.common.entity.DiaryEntity;
 import com.hsj.memories_back.repository.DiaryRepository;
 import com.hsj.memories_back.service.DiarySerivce;
@@ -33,5 +37,21 @@ public class DiaryServiceImplement implements DiarySerivce {
       return ResponseDto.databaseError();
     }
     return ResponseDto.success(HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<? super GetMyDiaryResponseDto> getMyDiary(String userId) {
+    
+    List<DiaryEntity> diaryEntities = new ArrayList<>();
+
+    try { 
+      
+      diaryEntities = diaryRepository.findByUserId(userId);
+
+    } catch (Exception exception){ 
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetMyDiaryResponseDto.success(diaryEntities);
   }
 }
