@@ -38,6 +38,7 @@ public class UserEntity {
         this.address = dto.getAddress();
         this.detailAddress = dto.getDetailAddress();
         this.joinType = dto.getJoinType();
+        this.snsId = dto.getSnsId();
     }
 
 }
