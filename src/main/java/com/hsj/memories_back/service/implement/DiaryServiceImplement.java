@@ -32,9 +32,6 @@ public class DiaryServiceImplement implements DiarySerivce {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
-
     return ResponseDto.success(HttpStatus.CREATED);
-
   }
-  
 }
