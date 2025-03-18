@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface DiaryRepository extends JpaRepository<DiaryEntity, Integer> {
   
+    DiaryEntity findByDiaryNumber(Integer diaryNumber);
     List<DiaryEntity> findByUserId(String userId);
 
 }

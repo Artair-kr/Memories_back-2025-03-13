@@ -9,20 +9,22 @@ import org.springframework.stereotype.Service;
 
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
+import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.hsj.memories_back.common.entity.DiaryEntity;
+import com.hsj.memories_back.handler.OAuth2SuccessHandler;
 import com.hsj.memories_back.repository.DiaryRepository;
 import com.hsj.memories_back.service.DiarySerivce;
 
 import lombok.RequiredArgsConstructor;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class DiaryServiceImplement implements DiarySerivce {
 
-  private final DiaryRepository diaryRepository;
+    private final DiaryRepository diaryRepository;
+
 
   @Override
   public ResponseEntity<ResponseDto> postDiary(PostDiaryRequestDto dto, String userId) {
@@ -53,5 +55,23 @@ public class DiaryServiceImplement implements DiarySerivce {
       return ResponseDto.databaseError();
     }
     return GetMyDiaryResponseDto.success(diaryEntities);
+  }
+
+  @Override
+  public ResponseEntity<? super GetDiaryResponseDto> getDiary(Integer diaryNumber) {
+
+    DiaryEntity diaryEntity = null;
+    
+    try {
+
+      diaryEntity = diaryRepository.findByDiaryNumber(diaryNumber);
+      if(diaryEntity == null) return ResponseDto.noExistDiary();
+
+    } catch(Exception exception){ 
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetDiaryResponseDto.success(diaryEntity);
   }
 }

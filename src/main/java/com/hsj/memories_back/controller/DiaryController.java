@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
+import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.hsj.memories_back.service.DiarySerivce;
 
@@ -16,6 +17,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -43,4 +47,13 @@ public class DiaryController {
         ResponseEntity<? super GetMyDiaryResponseDto> response = diarySerive.getMyDiary(userId);
         return response;
     } 
+
+    @GetMapping("/{diaryNumber}")
+    public ResponseEntity<? super GetDiaryResponseDto> getDiary( 
+        @PathVariable("diaryNumber") Integer diaryNumber
+    ){ 
+        ResponseEntity<? super GetDiaryResponseDto> response = diarySerive.getDiary(diaryNumber);
+        return response;
+    }
+    
 }
