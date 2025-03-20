@@ -1,10 +1,10 @@
 package com.hsj.memories_back.service.implement;
 
+import org.springframework.stereotype.Service;
+
 import com.hsj.memories_back.service.UserService;
 
-import lombok.Getter;
-
-@Getter
+@Service
 public class UserServiceImplement implements UserService{
     
 }
