@@ -6,7 +6,12 @@ import org.springframework.stereotype.Repository;
 import com.hsj.memories_back.common.entity.MemoryTestEntity;
 import com.hsj.memories_back.common.entity.pk.MemoryTestPk;
 
+
 @Repository
 public interface MemoryTestRepository extends JpaRepository<MemoryTestEntity, MemoryTestPk>{
     
+  int countByUserId(String userId);
+
+  MemoryTestEntity findByUserIdAndSequence(String userId, Integer sequence);
+
 }
