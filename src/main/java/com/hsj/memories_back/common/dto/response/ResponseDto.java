@@ -3,6 +3,8 @@ package com.hsj.memories_back.common.dto.response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.hsj.memories_back.common.dto.response.test.GetMemoryResponseDto;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
