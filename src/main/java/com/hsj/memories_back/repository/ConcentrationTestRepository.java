@@ -1,5 +1,7 @@
 package com.hsj.memories_back.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,5 @@ public interface ConcentrationTestRepository extends JpaRepository<Concentration
   Integer countByUserId(String userId);
 
   ConcentrationTestEntity findByUserIdAndSequence(String userId, Integer sequence);
+  List<ConcentrationTestEntity> findByUserIdOrderBySequenceDesc(String userId);
 }
