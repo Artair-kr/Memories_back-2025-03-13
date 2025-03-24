@@ -39,7 +39,7 @@ public class TestController {
     return response;
   }
 
-  @PostMapping("/concentraition")
+  @PostMapping("/concentration")
   public ResponseEntity<ResponseDto> postConcentration( 
     @RequestBody @Valid PostConcentrationRequestDto requestBody,
     @AuthenticationPrincipal String userId
@@ -57,7 +57,7 @@ public class TestController {
     return response;
   }
 
-  @GetMapping("/concentraition")
+  @GetMapping("/concentration")
   public ResponseEntity<? super GetConcentrationResponseDto> getConcentraition( 
     @AuthenticationPrincipal String userId
   ){ 
