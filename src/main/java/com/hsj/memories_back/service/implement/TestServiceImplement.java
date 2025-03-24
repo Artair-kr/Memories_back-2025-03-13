@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.hsj.memories_back.common.dto.request.test.PostConcentrationRequestDto;
 import com.hsj.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.hsj.memories_back.common.entity.ConcentrationTestEntity;
 import com.hsj.memories_back.common.entity.MemoryTestEntity;
+import com.hsj.memories_back.repository.ConcentrationTestRepository;
 import com.hsj.memories_back.repository.MemoryTestRepository;
 import com.hsj.memories_back.service.TestService;
 
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class TestServiceImplement implements TestService{
 
     private final MemoryTestRepository memoryTestRepository;
+    private final ConcentrationTestRepository concentrationTestRepository;
 
     @Override
     public ResponseEntity<ResponseDto> postMemory(PostMemoryRequestDto dto, String userId) {
@@ -47,6 +51,28 @@ public class TestServiceImplement implements TestService{
     }
 
     @Override
+    public ResponseEntity<ResponseDto> postConcentration(PostConcentrationRequestDto dto, String userId) {
+      try{ 
+        ConcentrationTestEntity concentrationTestEntity = null;
+        Integer preSequence = concentrationTestRepository.countByUserId(userId);
+
+        if(preSequence == 0) { // 이전 기록이 없을때
+          concentrationTestEntity = new ConcentrationTestEntity(dto, userId);
+        } else { // 이전 기록이 있을때
+          ConcentrationTestEntity preConcentrationTestEntity = 
+          concentrationTestRepository.findByUserIdAndSequence(userId, preSequence);
+          concentrationTestEntity = new ConcentrationTestEntity(dto, preConcentrationTestEntity, userId);
+        }
+
+        concentrationTestRepository.save(concentrationTestEntity);
+      }catch(Exception exception){ 
+        exception.printStackTrace();
+        return ResponseDto.databaseError();
+      }
+      return  ResponseDto.success(HttpStatus.CREATED);
+    } 
+
+    @Override
     public ResponseEntity<? super GetMemoryResponseDto> getMemory(String userId) {
 
         List<MemoryTestEntity> memoryTestEntities = new ArrayList<>();
@@ -59,8 +85,6 @@ public class TestServiceImplement implements TestService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
         return GetMemoryResponseDto.success(memoryTestEntities);
-
-    } 
+    }
 }

@@ -3,6 +3,7 @@ package com.hsj.memories_back.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hsj.memories_back.common.dto.request.test.PostConcentrationRequestDto;
 import com.hsj.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetMemoryResponseDto;
@@ -35,6 +36,16 @@ public class TestController {
     ResponseEntity<ResponseDto> response = testService.postMemory(requestBody, userId);
     return response;
   }
+
+  @PostMapping("/concentraition")
+  public  ResponseEntity<ResponseDto> postConcentration( 
+    @RequestBody @Valid PostConcentrationRequestDto requestBody,
+    @AuthenticationPrincipal String userId
+  ){ 
+    ResponseEntity<ResponseDto> response = testService.postConcentration(requestBody, userId);
+    return response;
+  }
+  
 
   @GetMapping("/memory")
   public ResponseEntity<? super GetMemoryResponseDto> getMemory(
