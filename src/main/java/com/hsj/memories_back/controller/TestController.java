@@ -8,6 +8,7 @@ import com.hsj.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetConcentrationResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.hsj.memories_back.common.dto.response.test.GetRecentlyMemoryResponseDto;
 import com.hsj.memories_back.service.TestService;
 
 import jakarta.validation.Valid;
@@ -18,10 +19,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
-
-
 
 @RestController
 @RequestMapping("/api/v1/test")
@@ -62,6 +59,14 @@ public class TestController {
     @AuthenticationPrincipal String userId
   ){ 
     ResponseEntity<? super GetConcentrationResponseDto> response = testService.getConcentration(userId);
+    return response;
+  }
+  
+  @GetMapping("/memory/recently")
+  public ResponseEntity<? super GetRecentlyMemoryResponseDto> getRecentlyMemory( 
+    @AuthenticationPrincipal String userId
+  ){ 
+    ResponseEntity<? super GetRecentlyMemoryResponseDto> response = testService.getRecentlyMemory(userId);
     return response;
   }
   
