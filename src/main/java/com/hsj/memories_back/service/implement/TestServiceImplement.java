@@ -12,6 +12,7 @@ import com.hsj.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetConcentrationResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.hsj.memories_back.common.dto.response.test.GetRecentlyConcentrationResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetRecentlyMemoryResponseDto;
 import com.hsj.memories_back.common.entity.ConcentrationTestEntity;
 import com.hsj.memories_back.common.entity.MemoryTestEntity;
@@ -121,5 +122,21 @@ public class TestServiceImplement implements TestService{
         return ResponseDto.databaseError();
       }
       return GetRecentlyMemoryResponseDto.success(memoryTestEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetRecentlyConcentrationResponseDto> getRecentlyConcentration(String userId) {
+
+      List<ConcentrationTestEntity> concentrationTestEntities = new ArrayList<>();
+
+      try{ 
+
+        concentrationTestEntities = concentrationTestRepository.findTop10ByUserIdOrderBySequenceDesc(userId);
+
+      }catch (Exception exception){ 
+        exception.printStackTrace();
+        return ResponseDto.databaseError();
+      }
+      return GetRecentlyConcentrationResponseDto.success(concentrationTestEntities);
     }
 }

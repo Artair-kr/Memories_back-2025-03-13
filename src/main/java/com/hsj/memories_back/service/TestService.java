@@ -7,6 +7,7 @@ import com.hsj.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetConcentrationResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.hsj.memories_back.common.dto.response.test.GetRecentlyConcentrationResponseDto;
 import com.hsj.memories_back.common.dto.response.test.GetRecentlyMemoryResponseDto;
 
 public interface TestService {
@@ -15,4 +16,5 @@ public interface TestService {
     ResponseEntity<? super GetMemoryResponseDto> getMemory(String userId);
     ResponseEntity<? super GetConcentrationResponseDto> getConcentration(String userId);
     ResponseEntity<? super GetRecentlyMemoryResponseDto> getRecentlyMemory(String userId);
+    ResponseEntity<? super GetRecentlyConcentrationResponseDto> getRecentlyConcentration(String userId);
 }
