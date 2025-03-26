@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.entity.EmpathyEntity;
 
+import lombok.Getter;
+
+@Getter
 public class GetEmpathyResponseDto extends ResponseDto{
 
   private List<String> empathies;
