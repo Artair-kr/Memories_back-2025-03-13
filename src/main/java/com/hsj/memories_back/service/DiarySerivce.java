@@ -14,4 +14,6 @@ public interface DiarySerivce {
     ResponseEntity<? super GetDiaryResponseDto> getDiary(Integer diaryNumber);
     ResponseEntity<ResponseDto> patchDiary(PatchDiaryRequestDto dto, Integer diaryNumber, String userId);
     ResponseEntity<ResponseDto> deleteDiary(Integer diaryNumber, String userId);
+    // 몇번일기에, 누가 작업을 하는지..
+    ResponseEntity<ResponseDto> putEmpathy(Integer diaryNumber, String userId);
 } 

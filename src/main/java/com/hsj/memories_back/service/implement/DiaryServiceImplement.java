@@ -13,7 +13,9 @@ import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.hsj.memories_back.common.entity.DiaryEntity;
+import com.hsj.memories_back.common.entity.EmpathyEntity;
 import com.hsj.memories_back.repository.DiaryRepository;
+import com.hsj.memories_back.repository.EmpathyRepository;
 import com.hsj.memories_back.service.DiarySerivce;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class DiaryServiceImplement implements DiarySerivce {
 
     private final DiaryRepository diaryRepository;
+
+    private final EmpathyRepository empathyRepository;
 
 
   @Override
@@ -113,6 +117,27 @@ public class DiaryServiceImplement implements DiarySerivce {
       diaryRepository.delete(diaryEntity);
 
     }catch(Exception exception){ 
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> putEmpathy(Integer diaryNumber, String userId) {
+
+    try { 
+
+      // 공감처리
+      EmpathyEntity empathyEntity = empathyRepository.findByUserIdAndDiaryNumber(userId, diaryNumber);
+      if (empathyEntity == null) {  
+        empathyEntity = new EmpathyEntity(userId, diaryNumber);
+        empathyRepository.save(empathyEntity);
+      } else {
+        empathyRepository.delete(empathyEntity);
+      }
+
+    } catch(Exception exception) { 
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }

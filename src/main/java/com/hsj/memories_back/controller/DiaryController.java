@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -75,5 +77,14 @@ public class DiaryController {
     ){ 
         ResponseEntity<ResponseDto> response = diarySerive.deleteDiary(diaryNumber, userId);
         return response;
+    }
+
+    @PutMapping("/{diaryNumber}/empathy")
+    public ResponseEntity<ResponseDto> putEmpathy(
+      @PathVariable("diaryNumber") Integer diaryNumber,
+      @AuthenticationPrincipal String userId
+    ) { 
+      ResponseEntity<ResponseDto> response = diarySerive.putEmpathy(diaryNumber, userId);
+      return response;
     }
 }
