@@ -35,7 +35,7 @@ public class FileController {
   // 반환 파일 타입 변경
   @GetMapping(value="/{fileName}", produces={MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
   public Resource getImageFile(
-    @PathVariable("filename") String fileName
+    @PathVariable("fileName") String fileName
   ) { 
     Resource resource = fileService.getImageFile(fileName);
     return resource;
