@@ -7,6 +7,7 @@ import com.hsj.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
+import com.hsj.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.hsj.memories_back.service.DiarySerivce;
 
@@ -22,9 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-
-
-
 
 
 @RestController
@@ -78,6 +76,15 @@ public class DiaryController {
         ResponseEntity<ResponseDto> response = diarySerive.deleteDiary(diaryNumber, userId);
         return response;
     }
+
+    @GetMapping("/{diaryNumber}/empathy")
+    public ResponseEntity<? super GetEmpathyResponseDto> getEmpathy( 
+      @PathVariable("diaryNumber") Integer diaryNumber
+    ){
+        ResponseEntity<? super GetEmpathyResponseDto> response = diarySerive.getEmpathy(diaryNumber);
+        return response;
+    }
+    
 
     @PutMapping("/{diaryNumber}/empathy")
     public ResponseEntity<ResponseDto> putEmpathy(
