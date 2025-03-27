@@ -11,6 +11,7 @@ import com.hsj.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostCommentRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
+import com.hsj.memories_back.common.dto.response.diary.GetCommentReponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
@@ -174,6 +175,22 @@ public class DiaryServiceImplement implements DiarySerivce {
 
     return ResponseDto.success(HttpStatus.OK);
 
+  }
+
+  @Override
+  public ResponseEntity<? super GetCommentReponseDto> getComment(Integer diaryNumber) {
+    
+    List<CommentEntity> commentEntities = new ArrayList<>();
+
+    try{ 
+
+      commentEntities = commentRepository.findByDiaryNumber(diaryNumber);
+
+    } catch(Exception exception){ 
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetCommentReponseDto.success(commentEntities);
   }
 
   @Override
