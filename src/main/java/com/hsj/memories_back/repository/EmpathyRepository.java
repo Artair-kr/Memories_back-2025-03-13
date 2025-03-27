@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.hsj.memories_back.common.entity.EmpathyEntity;
 import com.hsj.memories_back.common.entity.pk.EmpathyPk;
+
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 
@@ -14,4 +17,7 @@ public interface EmpathyRepository extends JpaRepository<EmpathyEntity, EmpathyP
   EmpathyEntity findByUserIdAndDiaryNumber(String userId, Integer diaryNumber);
 
   List<EmpathyEntity> findByDiaryNumber(Integer diaryNumber);
+
+  @Transactional
+  void deleteByDiaryNumber(Integer diaryNumber);
 }

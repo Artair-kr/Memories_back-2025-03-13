@@ -7,8 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.hsj.memories_back.common.entity.CommentEntity;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
     
-    List<CommentEntity> findByDiaryNumber(Integer diaryNumber);
+    List<CommentEntity> findByDiaryNumberOrderByWriteDateDesc(Integer diaryNumber);
+
+    @Transactional
+    void deleteByDiaryNumber(Integer diaryNumber);
 }

@@ -123,6 +123,8 @@ public class DiaryServiceImplement implements DiarySerivce {
       boolean isWriter = writerId.equals(userId);
       if (!isWriter) return ResponseDto.noPermission();
 
+      empathyRepository.deleteByDiaryNumber(diaryNumber);
+      commentRepository.deleteByDiaryNumber(diaryNumber);
       diaryRepository.delete(diaryEntity);
 
     } catch (Exception exception) {
@@ -184,7 +186,7 @@ public class DiaryServiceImplement implements DiarySerivce {
 
     try{ 
 
-      commentEntities = commentRepository.findByDiaryNumber(diaryNumber);
+      commentEntities = commentRepository.findByDiaryNumberOrderByWriteDateDesc(diaryNumber);
 
     } catch(Exception exception){ 
       exception.printStackTrace();

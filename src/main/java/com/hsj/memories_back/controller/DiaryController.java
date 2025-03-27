@@ -7,6 +7,7 @@ import com.hsj.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostCommentRequestDto;
 import com.hsj.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.hsj.memories_back.common.dto.response.ResponseDto;
+import com.hsj.memories_back.common.dto.response.diary.GetCommentReponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.hsj.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -95,6 +97,15 @@ public class DiaryController {
       ResponseEntity<ResponseDto> response = diarySerive.putEmpathy(diaryNumber, userId);
       return response;
     }
+
+    @GetMapping("/{diaryNumber}/comment")
+    public ResponseEntity<? super GetCommentReponseDto> getComment( 
+      @PathVariable("diaryNumber") Integer diaryNumber
+    ){ 
+        ResponseEntity<? super GetCommentReponseDto> response =  diarySerive.getComment(diaryNumber);
+        return response;
+    }
+    
 
     @PostMapping("/{diaryNumber}/comment")
     public ResponseEntity<ResponseDto> postComment( 
