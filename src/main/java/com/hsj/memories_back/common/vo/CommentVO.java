@@ -11,13 +11,13 @@ import lombok.Getter;
 public class CommentVO {
   private Integer commentNumber;
   private String commentWriterId;
-  private String commentwriteDate;
+  private String commentWriteDate;
   private String comment;
 
   private CommentVO(CommentEntity commentEntity){ 
     this.commentNumber = commentEntity.getCommentNumber();
     this.commentWriterId = commentEntity.getUserId();
-    this.commentwriteDate = commentEntity.getWriteDate();
+    this.commentWriteDate = commentEntity.getWriteDate();
     this.comment = commentEntity.getContent();
   }
 
